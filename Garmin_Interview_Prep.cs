@@ -516,3 +516,71 @@ public class Solution
         return depth;
     }
 }
+//given root, invert tree and return root
+public class Solution
+{
+    public TreeNode InvertTree(TreeNode root)
+    {
+        if (root == null)
+        {
+            return null;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        //invert left subtree
+        InvertTree(root.left);
+        //invert right subtree
+        InvertTree(root.right);
+        return root;
+
+    }
+}
+//make a calculator
+public class Solution
+{
+    public int Calculate(string s)
+    {
+        if (s == null || s.Length == 0) return 0;
+        Stack<int> stack = new Stack<int>();
+        int currentNumber = 0;
+        char operation = '+';
+        for (int i = 0; i < s.Length; i++)
+        {
+            char currentChar = s[i];
+            if (Char.IsDigit(currentChar))
+            {
+                //currentNumber *10 will add any more numbers to next place, while currentChar - '0' is ASCII
+                currentNumber = (currentNumber * 10) + (currentChar - '0');
+            }
+            if ((!Char.IsDigit(currentChar) && !Char.IsWhiteSpace(currentChar)) || i == s.Length - 1)
+            {
+                if (operation == '-')
+                {
+                    stack.Push(-currentNumber);
+                }
+                else if (operation == '+')
+                {
+                    stack.Push(currentNumber);
+                }
+                else if (operation == '*')
+                {
+                    stack.Push(stack.Pop() * currentNumber);
+                }
+                else if (operation == '/')
+                {
+                    stack.Push(stack.Pop() / currentNumber);
+                }
+                operation = currentChar;
+                currentNumber = 0;
+            }
+        }
+        int result = 0;
+        while (stack.Count != 0)
+        {
+            result += stack.Pop();
+        }
+        return result;
+    }
+
+}
